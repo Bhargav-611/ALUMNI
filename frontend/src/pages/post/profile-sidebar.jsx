@@ -68,7 +68,7 @@ export function ProfileSidebar() {
     return (
         <div className="space-y-4">
             {/* Profile Card */}
-            <Card className="fixed w-80 left-52">
+            <Card className="fixed w-80 left-32">
                 <CardContent className="p-0">
                     {/* Cover Image */}
                     <div className="h-16 bg-gradient-to-r from-blue-600 to-blue-700 relative">

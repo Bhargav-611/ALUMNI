@@ -59,31 +59,20 @@ export function LinkedInHeader() {
                                 <span className="text-xs">Jobs</span>
                             </Button>
 
-                            {/* Messaging */}
-                            <Link to="/chat">
-
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                className="flex flex-col items-center gap-1 px-3 py-2 h-auto text-muted-foreground hover:text-foreground relative"
-                            >
-                                <MessageCircle className="w-5 h-5" />
-                                <span className="text-xs">Messaging</span>
-                            </Button>
-                            </Link>
-
                             {/* Notifications */}
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                className="flex flex-col items-center gap-1 px-3 py-2 h-auto text-muted-foreground hover:text-foreground relative"
-                            >
-                                <Bell className="w-5 h-5" />
-                                <span className="text-xs">Notifications</span>
-                                <Badge className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs px-1 min-w-5 h-5 flex items-center justify-center">
-                                    15
-                                </Badge>
-                            </Button>
+                            <Link to="/notifications">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="flex flex-col items-center gap-1 px-3 py-2 h-auto text-muted-foreground hover:text-foreground relative"
+                                >
+                                    <Bell className="w-5 h-5" />
+                                    <span className="text-xs">Notifications</span>
+                                    <Badge className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs px-1 min-w-5 h-5 flex items-center justify-center">
+                                        15
+                                    </Badge>
+                                </Button>
+                            </Link>
 
                             {/* Me */}
                             <Link to="/profile">

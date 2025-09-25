@@ -9,6 +9,8 @@ import AuthPage from "./pages/auth/page";
 import { Navigate } from "react-router-dom";
 import MyNetwork from "./pages/myNetwork/myNetwork";
 import ChatPage from "./pages/chat/ChatPage";
+import NotificationPage from "./pages/chat/NotificationPage";
+import ChatPageWrapper from "./pages/chat/ChatPageWrapper";
 
 export default function App() {
   return (
@@ -18,8 +20,13 @@ export default function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/network" element={<MyNetwork/>} />
-        <Route path="/chat" element={<ChatPage/>} />
+        <Route path="/network" element={<MyNetwork />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/notifications" element={<NotificationPage />} />
+        {/* <Route path="/chat/:userId" element={<ChatPageWrapper />} /> */}
+        {/* <Route path="/chat/:chatId" element={<ChatPage />} /> */}
+
+
         {/* Default redirect */}
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>

@@ -16,11 +16,30 @@ router.post("/start/:alumniId", authMiddleware, async (req, res) => {
       participants: { $all: [userId, alumniId] }
     });
 
+    console.log(chat);
+
+
     if (!chat) {
       chat = await Chat.create({ participants: [userId, alumniId] });
     }
 
     const messages = await Message.find({ chat: chat._id }).populate("sender", "username role");
+    res.json({ ...chat.toObject(), messages });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// Get chat by chatId (with messages)
+router.get("/:chatId", authMiddleware, async (req, res) => {
+  try {
+    const chat = await Chat.findById(req.params.chatId).populate("participants", "username role");
+    if (!chat) return res.status(404).json({ msg: "Chat not found" });
+
+    const messages = await Message.find({ chat: chat._id })
+      .populate("sender", "username role");
+
     res.json({ ...chat.toObject(), messages });
   } catch (err) {
     console.error(err);
