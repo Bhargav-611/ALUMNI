@@ -3,7 +3,7 @@ import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import LinkedInLoadingScreen from "../../LinkedInLoadingScreen";
-import { LinkedInHeader } from "../../components/Linkedin-header";
+import { LinkedInHeader } from "../../components/linkedin-header";
 import ChatPage from "../chat/ChatPage";
 
 export default function MyNetwork() {
@@ -27,7 +27,7 @@ export default function MyNetwork() {
                 const res2 = await axios.get("http://localhost:5000/api/follow/followers", {
                     withCredentials: true,
                 });
-                setFollowers(res2.data);
+                setFollowers(res2.data);    
             } catch (err) {
                 console.error("Error fetching following/followers:", err);
             } finally {

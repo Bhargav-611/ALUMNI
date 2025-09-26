@@ -10,6 +10,7 @@ import profileRoutes from "./routes/profileRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import followRoutes from "./routes/followRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js"; // <-- new chat routes
+import eventRoutes from "./routes/eventRoutes.js"
 import path from "path";
 import { fileURLToPath } from "url";
 import Message from "./models/Message.js";
@@ -47,6 +48,7 @@ app.use("/api/posts", postRoutes);
 app.use("/api/follow", followRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/events", eventRoutes);
 
 // Real-time chat logic
 io.on("connection", (socket) => {
@@ -96,6 +98,7 @@ io.on("connection", (socket) => {
       chatId,
       text,
     });
+    console.log(notif);
     await notif.save();
 
     // Emit real-time notification to recipient's personal room

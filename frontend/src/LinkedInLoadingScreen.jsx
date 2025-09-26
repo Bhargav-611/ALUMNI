@@ -1,3 +1,4 @@
+
 import React from "react";
 
 // LinkedIn-like loading / skeleton screen
@@ -8,13 +9,15 @@ export default function LinkedInLoadingScreen() {
     <div className="min-h-screen bg-gray-100">
       {/* Top nav */}
       <header className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 bg-blue-600 rounded-sm flex items-center justify-center text-white font-bold">in</div>
+            <div className="h-8 w-8 bg-blue-600 rounded-sm flex items-center justify-center text-white font-bold">
+              in
+            </div>
             <div className="h-4 w-40 bg-gray-200 rounded animate-pulse" />
           </div>
 
-          <div className="flex-1">
+          <div className="flex-1 min-w-[200px]">
             <div className="h-8 max-w-md mx-auto bg-gray-200 rounded-full animate-pulse" />
           </div>
 
@@ -26,8 +29,8 @@ export default function LinkedInLoadingScreen() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-12 gap-6">
-        {/* Left rail (profile card skeleton) */}
-        <aside className="col-span-3">
+        {/* Left rail */}
+        <aside className="col-span-12 md:col-span-4 lg:col-span-3">
           <div className="bg-white rounded-lg shadow-sm p-4">
             <div className="flex flex-col items-center gap-3">
               <div className="h-20 w-20 rounded-full bg-gray-200 animate-pulse" />
@@ -43,8 +46,8 @@ export default function LinkedInLoadingScreen() {
           </div>
         </aside>
 
-        {/* Feed (skeleton cards) */}
-        <section className="col-span-6 space-y-6">
+        {/* Feed */}
+        <section className="col-span-12 md:col-span-8 lg:col-span-6">
           {/* Create post skeleton */}
           <div className="bg-white rounded-lg shadow-sm p-4">
             <div className="flex items-start gap-3">
@@ -56,7 +59,7 @@ export default function LinkedInLoadingScreen() {
             </div>
           </div>
 
-          {/* Multiple post skeletons */}
+          {/* Multiple posts */}
           {Array.from({ length: 3 }).map((_, i) => (
             <article key={i} className="bg-white rounded-lg shadow-sm p-4">
               <div className="flex items-start gap-4">
@@ -82,8 +85,8 @@ export default function LinkedInLoadingScreen() {
           ))}
         </section>
 
-        {/* Right rail (suggestions skeleton) */}
-        <aside className="col-span-3">
+        {/* Right rail */}
+        <aside className="col-span-12 lg:col-span-3">
           <div className="bg-white rounded-lg shadow-sm p-4 space-y-4">
             <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
             <div className="space-y-3">
@@ -101,7 +104,7 @@ export default function LinkedInLoadingScreen() {
         </aside>
       </main>
 
-      {/* Small footer shimmer */}
+      {/* Footer */}
       <div className="max-w-6xl mx-auto px-4 pb-12">
         <div className="h-3 w-full bg-gray-100 rounded animate-pulse" />
       </div>

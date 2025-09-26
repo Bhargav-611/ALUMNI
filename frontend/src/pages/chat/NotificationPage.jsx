@@ -3,8 +3,8 @@ import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import LinkedInLoadingScreen from "../../LinkedInLoadingScreen";
-import { LinkedInHeader } from "../../components/Linkedin-header";
 import ChatPage from "../chat/ChatPage";
+import { LinkedInHeader } from "../../components/linkedin-header";
 
 export default function NotificationPage() {
     const [notifications, setNotifications] = useState([]);
@@ -37,11 +37,12 @@ export default function NotificationPage() {
                 { withCredentials: true }
             );
 
-            // Show ChatPage inline
-            console.log(notif);
+            // Show ChatPage in
+            // console.log(notif);
             
             if (notif.chatId) {
-                setSelectedChat(notif.chatId);
+                // setSelectedChat(notif.alumniId);
+                setSelectedChat(notif.recipient);
             } else {
                 console.error("No chatId found in notification");
             }
@@ -60,7 +61,7 @@ export default function NotificationPage() {
             <LinkedInHeader />
 
             {selectedChat ? (
-                <ChatPage chatId={selectedChat} onBack={() => setSelectedChat(null)} />
+                <ChatPage alumniId={selectedChat} onBack={() => setSelectedChat(null)} />
             ) : (
                 <div className="max-w-3xl mx-auto p-4">
                     <h2 className="text-2xl font-bold mb-4">Notifications</h2>

@@ -45,19 +45,20 @@ export default function ChatPage({ alumniId, chatId, onBack }) {
 
         const fetchChat = async () => {
             let res;
-            if (chatId) {
-                res = await axios.get(
-                    `http://localhost:5000/api/chat/${chatId}`,
-                    { withCredentials: true }
-                );
-            } else if (alumniId) {
+            // if (chatId) {
+            //     res = await axios.get(
+            //         `http://localhost:5000/api/chat/${chatId}`,
+            //         { withCredentials: true }
+            //     );
+            // } else 
+            // console.log(alumniId);
+            if (alumniId) {
                 res = await axios.post(
                     `http://localhost:5000/api/chat/start/${alumniId}`,
                     {},
                     { withCredentials: true }
                 );
             }
-
             setChat(res.data);
             setMessages(res.data.messages || []);
 
@@ -81,6 +82,7 @@ export default function ChatPage({ alumniId, chatId, onBack }) {
     }, [socket]);
 
     const handleSend = () => {
+        // console.log(chat);
         if (!text || !chat || !currentUser) return;
 
         const recipientId = chat.participants.find(

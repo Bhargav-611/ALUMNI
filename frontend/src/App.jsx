@@ -11,6 +11,7 @@ import MyNetwork from "./pages/myNetwork/myNetwork";
 import ChatPage from "./pages/chat/ChatPage";
 import NotificationPage from "./pages/chat/NotificationPage";
 import ChatPageWrapper from "./pages/chat/ChatPageWrapper";
+import EventPage from "./pages/event/EventPage";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/network" element={<MyNetwork />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/notifications" element={<NotificationPage />} />
+        <Route path="/event" element={<EventPage/>} />
         {/* <Route path="/chat/:userId" element={<ChatPageWrapper />} /> */}
         {/* <Route path="/chat/:chatId" element={<ChatPage />} /> */}
 

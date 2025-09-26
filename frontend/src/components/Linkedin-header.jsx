@@ -50,14 +50,16 @@ export function LinkedInHeader() {
                             </Link>
 
                             {/* Jobs */}
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                className="flex flex-col items-center gap-1 px-3 py-2 h-auto text-muted-foreground hover:text-foreground"
-                            >
-                                <Briefcase className="w-5 h-5" />
-                                <span className="text-xs">Jobs</span>
-                            </Button>
+                            <Link to="/event">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="flex flex-col items-center gap-1 px-3 py-2 h-auto text-muted-foreground hover:text-foreground"
+                                >
+                                    <Briefcase className="w-5 h-5" />
+                                    <span className="text-xs">Jobs</span>
+                                </Button>
+                            </Link>
 
                             {/* Notifications */}
                             <Link to="/notifications">
