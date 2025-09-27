@@ -4,8 +4,40 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Link, Routes, Route } from "react-router-dom"
 import HomePage from "@/pages/post/Home"
+import { io } from "socket.io-client";
+import { useEffect, useState } from "react"
+import axios from "axios"
+
+const socket = io("http://localhost:5000", { withCredentials: true });
 
 export function LinkedInHeader() {
+
+    const [notifCount, setNotifCount] = useState(0);
+
+    const fetchNotifCount = async () => {
+        try {
+            const res = await axios.get("http://localhost:5000/api/notifications/count", {
+                withCredentials: true,
+            });
+            setNotifCount(res.data.count || 0);
+        } catch (err) {
+            console.error("Error fetching notification count:", err);
+        }
+    };
+
+    useEffect(() => {
+        fetchNotifCount();
+
+        // ✅ Listen for new notifications via socket
+        socket.on("newNotification", () => {
+            fetchNotifCount(); // refresh count instantly
+        });
+
+        return () => {
+            socket.off("newNotification");
+        };
+    }, []);
+
     return (
         <header className="bg-card bg-white border-b border-border sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4">
@@ -70,9 +102,15 @@ export function LinkedInHeader() {
                                 >
                                     <Bell className="w-5 h-5" />
                                     <span className="text-xs">Notifications</span>
-                                    <Badge className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs px-1 min-w-5 h-5 flex items-center justify-center">
-                                        15
-                                    </Badge>
+                                    {notifCount > 0 && (
+                                        <Badge
+                                            className="absolute -top-0 -right-1 bg-red-500 text-white text-xs h-5 w-5 flex items-center justify-center rounded-full"
+                                        >
+                                            {notifCount}
+                                        </Badge>
+                                    )}
+
+
                                 </Button>
                             </Link>
 

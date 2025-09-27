@@ -12,6 +12,7 @@ import ChatPage from "./pages/chat/ChatPage";
 import NotificationPage from "./pages/chat/NotificationPage";
 import ChatPageWrapper from "./pages/chat/ChatPageWrapper";
 import EventPage from "./pages/event/EventPage";
+import ErrorPage from "./pages/error/ErrorPage";
 
 export default function App() {
   return (
@@ -28,9 +29,10 @@ export default function App() {
         {/* <Route path="/chat/:userId" element={<ChatPageWrapper />} /> */}
         {/* <Route path="/chat/:chatId" element={<ChatPage />} /> */}
 
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/error" element={<ErrorPage />} />
+        <Route path="*" element={<Navigate to="/error" replace />} />
 
-        {/* Default redirect */}
-        <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </BrowserRouter>
   );

@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function ChatPage({ alumniId, chatId, onBack }) {
     const [chat, setChat] = useState(null);
@@ -11,6 +12,11 @@ export default function ChatPage({ alumniId, chatId, onBack }) {
     const [socket, setSocket] = useState(null);
     // const alumniId = window.location.pathname.split("/").pop();
     // const { chatId } = useParams();
+
+    // console.log(alumniId);
+
+
+    const navigate = useNavigate();
 
     const messagesEndRef = useRef(null);
 
@@ -27,9 +33,22 @@ export default function ChatPage({ alumniId, chatId, onBack }) {
 
     // Load current user
     useEffect(() => {
-        axios.get("http://localhost:5000/api/auth/me", { withCredentials: true })
-            .then(res => setCurrentUser(res.data));
+        const fetchCurrentUser = async () => {
+            try {
+                const res = await axios.get("http://localhost:5000/api/auth/me", {
+                    withCredentials: true,
+                });
+                setCurrentUser(res.data);
+
+            } catch (err) {
+                console.error("Error fetching current user:", err);
+                navigate("/auth");
+            }
+        };
+
+        fetchCurrentUser();
     }, []);
+
 
     // Setup socket connection once
     useEffect(() => {

@@ -109,6 +109,12 @@ io.on("connection", (socket) => {
       text,
     });
 
+    //  When you create a notification
+    io.to(recipientId.toString()).emit("newNotification", {
+      message: "You have a new notification",
+    });
+
+
     console.log(`📩 Message from ${senderId} to ${recipientId} saved & notified`);
   });
 });

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { LinkedInHeader } from "../../components/linkedin-header";
 import { Separator } from "@/components/ui/separator";
+import { useNavigate } from "react-router-dom";
 
 export default function EventPage() {
     const [events, setEvents] = useState([]);
@@ -14,23 +15,45 @@ export default function EventPage() {
     const [showPopup, setShowPopup] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
 
+    // New states for search & date range
+    const [searchTerm, setSearchTerm] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
+    const navigate = useNavigate();
+
+    // Load current user
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const res = await axios.get("http://localhost:5000/api/auth/me", {
+                    withCredentials: true,
+                });
+                setCurrentUser(res.data);
+
+                if (!res.data._id || !res.data.username) {
+                    navigate("/auth");
+                    return;
+                }
+            } catch (err) {
+                console.error("Error fetching current user:", err);
+                navigate("/auth");
+            }
+        };
+
+        fetchCurrentUser();
+    }, []);
 
     const fetchEvents = async () => {
         try {
-            const me = await axios.get("http://localhost:5000/api/auth/me", { withCredentials: true });
-            setCurrentUser(me.data);
-
             const res = await axios.get("http://localhost:5000/api/events", { withCredentials: true });
             setEvents(res.data);
-
         } catch (err) {
-            console.error("Error fetching following/followers:", err);
+            console.error("Error fetching events:", err);
         }
     };
 
-
     useEffect(() => {
-
         fetchEvents();
     }, []);
 
@@ -71,74 +94,119 @@ export default function EventPage() {
         fetchEvents();
     };
 
+    // Filtered Events
+    const filteredEvents = events.filter(event => {
+        const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const eventDate = new Date(event.date);
+        const matchesStart = startDate ? eventDate >= new Date(startDate) : true;
+        const matchesEnd = endDate ? eventDate <= new Date(endDate) : true;
+
+        return matchesSearch && matchesStart && matchesEnd;
+    });
+
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
             <LinkedInHeader />
 
             <div className="max-w-xl mx-auto p-4">
-                <h1 className="text-2xl font-bold mb-4">Events</h1>
 
-                {/* Events list */}
-                {events.map(event => (
-                    <div
-                        key={event._id}
-                        className="border rounded mb-6 bg-white shadow max-w-xl mx-auto"
-                    >
-                        {/* Event Image */}
-                        {event.image && (
-                            <img
-                                src={event.image}
-                                alt="Event"
-                                className="w-full object-cover rounded-t"
+                {/* Search & Filter */}
+                {/* Search & Filter Section */}
+                <div className="sticky top-16 z-10 bg-gray-50 pb-4">
+                    <h1 className="flex text-2xl font-bold mb-4">Events</h1>
+                    <div className="flex flex-col sm:flex-row gap-2 items-center justify-between">
+                        {/* Search by Name */}
+                        <input
+                            type="text"
+                            placeholder="Search events..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="border p-2 rounded w-full sm:w-1/2"
+                        />
+
+                        {/* Date Range Filter */}
+                        <div className="flex gap-2 w-full sm:w-auto">
+                            <input
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                className="border p-2 rounded w-1/2 sm:w-auto"
                             />
-                        )}
-
-                        <div className="p-4">
-                            <h2 className="text-lg font-bold">{event.title}</h2>
-                            <p className="text-gray-700 text-sm">{event.description}</p>
-                            <p className="text-xs text-gray-500 mt-1">
-                                📅 {new Date(event.date).toLocaleDateString()}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                                🎟 Seats: {event.participants.length}/{event.seats}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                                👤 Created by: {event.createdBy?.username}
-                            </p>
-                        </div>
-
-                        <Separator className="my-2" />
-
-                        {/* Engagement & Actions */}
-                        <div className="px-4 py-2 flex items-center justify-between text-sm text-muted-foreground">
-                            <div className="flex items-center gap-2">
-                                <span className="font-medium">Participants:</span>
-                                <span>{event.participants.length}</span>
-                            </div>
-
-                            {currentUser?.role === "student" && (
-                                event.participants.some(p => p._id === currentUser._id) ? (
-                                    <button
-                                        onClick={() => cancelParticipation(event._id)}
-                                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs"
-                                    >
-                                        Cancel
-                                    </button>
-                                ) : (
-                                    <button
-                                        onClick={() => participate(event._id)}
-                                        className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs"
-                                    >
-                                        Participate
-                                    </button>
-                                )
-                            )}
+                            <input
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                className="border p-2 rounded w-1/2 sm:w-auto"
+                            />
                         </div>
                     </div>
-                ))}
+                </div>
 
 
+                {/* Events list */}
+                {filteredEvents.length === 0 ? (
+                    <p className="text-gray-500">No events found.</p>
+                ) : (
+                    filteredEvents.map(event => (
+                        <div
+                            key={event._id}
+                            className="border rounded mb-6 bg-white shadow max-w-xl mx-auto"
+                        >
+                            {/* Event Image */}
+                            {event.image && (
+                                <img
+                                    src={event.image}
+                                    alt="Event"
+                                    className="w-full object-cover rounded-t"
+                                />
+                            )}
+
+                            <div className="p-4">
+                                <h2 className="text-lg font-bold">{event.title}</h2>
+                                <p className="text-gray-700 text-sm">{event.description}</p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    📅 {new Date(event.date).toLocaleDateString()}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                    🎟 Seats: {event.participants.length}/{event.seats}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                    👤 Created by: {event.createdBy?.username}
+                                </p>
+                            </div>
+
+                            <Separator className="my-2" />
+
+                            {/* Engagement & Actions */}
+                            <div className="px-4 py-2 flex items-center justify-between text-sm text-muted-foreground">
+                                <div className="flex items-center gap-2">
+                                    <span className="font-medium">Participants:</span>
+                                    <span>{event.participants.length}</span>
+                                </div>
+
+                                {currentUser?.role === "student" && (
+                                    event.participants.some(p => p._id === currentUser._id) ? (
+                                        <button
+                                            onClick={() => cancelParticipation(event._id)}
+                                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs"
+                                        >
+                                            Cancel
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => participate(event._id)}
+                                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs"
+                                        >
+                                            Participate
+                                        </button>
+                                    )
+                                )}
+                            </div>
+                        </div>
+                    ))
+                )}
 
                 {currentUser?.role === "alumni" && (
                     <button

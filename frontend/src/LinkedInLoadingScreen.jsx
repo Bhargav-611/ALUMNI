@@ -12,7 +12,7 @@ export default function LinkedInLoadingScreen() {
         <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="h-8 w-8 bg-blue-600 rounded-sm flex items-center justify-center text-white font-bold">
-              in
+              CU
             </div>
             <div className="h-4 w-40 bg-gray-200 rounded animate-pulse" />
           </div>
